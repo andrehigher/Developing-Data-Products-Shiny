@@ -1,29 +1,25 @@
+
 library(shiny)
 
-shinyUI(pageWithSidebar(
-    
-    headerPanel("Limit Theorem"),
-    
+shinyUI(fluidPage(
+  
+  titlePanel("The Iris Dataset", windowTitle = "The Iris Dataset Shiny App" ),   
+  
+  sidebarLayout(
     sidebarPanel(
-        sliderInput("n", 
-                    "Number of samples:", 
-                    min = 1,
-                    max = 2500, 
-                    value = 100),
-        sliderInput("bins", 
-                    "Number of bins:", 
-                    min = 1,
-                    max = 100, 
-                    value = 20),
-        withMathJax(),
-        uiOutput('population_mean'),
-        uiOutput('sample_means_mean'),
-        uiOutput('population_sd'),
-        uiOutput('sample_means_mean_sd'),
+      selectInput(inputId = "species", label = "Choose a species of iris:", 
+                  choices = c("setosa" , "virginica" , "versicolor" ) ) ,
+      selectInput(inputId = "part" , "Choose petal or sepal:", 
+                  choices = c("Petal" , "Sepal") )
     ),
     
     mainPanel(
-        plotOutput("distPlot", height = "300px", width="80%"),
-        plotOutput("sampleDistPlot", height = "300px", width="80%")
+      p("Course Project of Developing Data Products."),
+      p("\n"),
+      p("The Iris Dataset is a multivariate dataset composed by 150 measuerments of widths and lengths of both sepal and petal of three species of Iris: I. setosa, I. virginica and I. versicolor."),
+      p("\n"),
+      p("The purpose of this app is to do some exploratory analysis of petals and sepals of the three species of Iris."),
+      plotOutput("distPlot")
     )
+  )
 ))
