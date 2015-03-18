@@ -1,25 +1,31 @@
-
 library(shiny)
+library(shinyapps)
 
-shinyUI(fluidPage(
-  
-  titlePanel("The Iris Dataset", windowTitle = "The Iris Dataset Shiny App" ),   
-  
-  sidebarLayout(
-    sidebarPanel(
-      selectInput(inputId = "species", label = "Choose a species of iris:", 
-                  choices = c("setosa" , "virginica" , "versicolor" ) ) ,
-      selectInput(inputId = "part" , "Choose petal or sepal:", 
-                  choices = c("Petal" , "Sepal") )
-    ),
-    
-    mainPanel(
-      p("Course Project of Developing Data Products."),
-      p("\n"),
-      p("The Iris Dataset is a multivariate dataset composed by 150 measuerments of widths and lengths of both sepal and petal of three species of Iris: I. setosa, I. virginica and I. versicolor."),
-      p("\n"),
-      p("The purpose of this app is to do some exploratory analysis of petals and sepals of the three species of Iris."),
-      plotOutput("distPlot")
+shinyUI(     
+    fluidPage(
+      titlePanel("Relantionship of Miles per gallon (MPG) and all other variables"),
+      helpText("The data was extracted from the 1974 Motor Trend US magazine,",
+               " and comprises fuel consumption and 10 aspects of automobile design and performance",
+               " for 32 automobiles (1973–74 models)."),
+      
+      sidebarLayout(
+        sidebarPanel(
+          selectInput("variable", "Variable:",
+                      c("Number of cylinders" = "cyl",
+                        "Displacement (cu.in.)" = "disp",
+                        "Gross horsepower" = "hp",
+                        "Rear axle ratio" = "drat",
+                        "Weight (lb/1000)" = "wt",
+                        "1/4 mile time" = "qsec",
+                        "V/S" = "vs",
+                        "Transmission" = "am",
+                        "Number of forward gears" = "gear",
+                        "Number of carburetors" = "carb"
+                      ))
+        ),
+        mainPanel(
+          tabPanel("BoxPlot", plotOutput("mpgBoxPlot"))
+        )
+      )
     )
-  )
-))
+)

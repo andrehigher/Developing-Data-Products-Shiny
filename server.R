@@ -1,22 +1,29 @@
-
 library(shiny)
-data(iris)
+library(shinyapps)
+library(datasets)
+
+data <- mtcars
+data$am <- factor(data$am, labels = c("Automatic", "Manual"))
 
 shinyServer(function(input, output) {
   
-  output$distPlot <- renderPlot({
-    
-    # subset the iris dataset according to the selections from ui.R
-    x    <- iris[ iris$Species == input$species ,]
-    if( input$part == "Petal"){
-      x <- x[,3:4]
-    }else{
-      x <- x[,1:2]
-    }
-    
-    # draw the histogram with the specified number of bins
-    plot(x)
-    
+  formulaText <- reactive({
+    paste("mpg ~", input$variable)
   })
   
+  formulaTextPoint <- reactive({
+    paste("mpg ~", "as.integer(", input$variable, ")")
+  })
+  
+  fit <- reactive({
+    lm(as.formula(formulaTextPoint()), data=data)
+  })
+  
+  output$mpgBoxPlot <- renderPlot({
+    boxplot(as.formula(formulaText()), 
+            data = data,
+            outline = TRUE)
+  })
+  
+ 
 })
