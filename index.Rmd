@@ -1,0 +1,80 @@
+---
+title       : Relantionship of Miles per gallon (MPG) and all other variables
+subtitle    : Reproducible Pitch Presentation
+author      : Andre Gonzaga
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Application
+
+Shiny Application:
+```
+https://andrehigher.shinyapps.io/Developing-Data-Products-Shiny
+```
+
+Sourcecode at GitHub:
+```
+https://github.com/andrehigher/Developing-Data-Products-Shiny
+```
+
+--- .class #id 
+
+## Problem Description
+
+> The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+```{r}
+library(datasets)
+head(mtcars, 8)
+```
+
+---
+
+## Variables
+
+| Index | Field | Description |
+------- | ----- | ------ |
+| [, 1] | mpg | Miles/(US) gallon |
+| [, 2]  | cyl | Number of cylinders |
+| [, 3]  | disp | Displacement (cu.in.) |
+| [, 4]	| hp | Gross horsepower |
+| [, 5]	| drat | Rear axle ratio |
+| [, 6]	| wt | Weight (lb/1000) |
+| [, 7]	| qsec | 1/4 mile time |
+| [, 8]	| vs | V/S |
+| [, 9]	| am | Transmission (0 = automatic, 1 = manual) |
+| [,10]	| gear | Number of forward gears |
+| [,11]	| carb | Number of carburetors |
+
+---
+
+## Code
+
+```r
+  formulaText <- reactive({
+    paste("mpg ~", input$variable)
+  })
+  
+  formulaTextPoint <- reactive({
+    paste("mpg ~", "as.integer(", input$variable, ")")
+  })
+  
+  fit <- reactive({
+    lm(as.formula(formulaTextPoint()), data=data)
+  })
+  
+  output$mpgBoxPlot <- renderPlot({
+    boxplot(as.formula(formulaText()), 
+            data = data,
+            outline = TRUE)
+  })
+
+```
+
+
